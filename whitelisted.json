@@ -16,7 +16,7 @@
 		
 }
 },
-  "allowed_domains": ["madkidgames.com", "www.madkidgames.com", "cdn.madkidgames.com", "https://keep-on-mining.vercel.app"],
+  "allowed_domains": ["madkidgames.com", "www.madkidgames.com", "cdn.madkidgames.com", "keep-on-mining.vercel.app"],
   
   "whitelisted_games": [
     {
