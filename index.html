@@ -1,179 +1,45 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
-  <!--Idk man-->
-  <script>
-    (function(w,i,g){w[g]=w[g]||[];if(typeof w[g].push=='function')w[g].push(i)})
-    (window,'GT-5MCJDFHT','google_tags_first_party');
-  </script>
-  <script async src="/ej6j/"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('set', 'developer_id.dY2E1Nz', true);
-  </script>
-  
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Unity WebGL Player | Keep on Mining</title>
-  <link rel="shortcut icon" href="TemplateData/favicon.ico">
-  <link rel="stylesheet" href="TemplateData/style.css">
-  <link rel="manifest" href="manifest.webmanifest">
-
-  <script>
-    window.unityInstance = null;
-  </script>
-
-  <script>
-  (function () {
-    const BRAND = 'MadKidGames';
-    const WHITELIST_URL = 'https://keep-on-mining.vercel.app/whitelisted.json';
-    const GAME_ENUM = 'KEEP_ON_MINING';
-    const OFFICIAL_SITE = 'https://keep-on-mining.vercel.app';
-    const REDIRECT_DELAY = 300000;
-
-    function normalize(d) {
-      return (d || '').toLowerCase().replace(/^www\./, '').replace(/:\d+$/, '');
-    }
-
-    function safe(fn) {
-      try { const v = fn(); return v ? normalize(v) : null; } catch { return null; }
-    }
-
-    function getFlag(flags, key, def) {
-      return flags && flags[key] !== undefined ? flags[key] : def;
-    }
-
-    let DEBUG = false;
-    const selfHost = normalize(location.hostname);
-    const signals = [];
-
-    signals.push(safe(() => window.location.ancestorOrigins?.[0] ? new URL(window.location.ancestorOrigins[0]).hostname : null));
-    signals.push(safe(() => window.top?.location?.hostname));
-    signals.push(safe(() => window.parent?.location?.hostname));
-    signals.push(safe(() => document.referrer && new URL(document.referrer).hostname));
-    signals.push(safe(() => window.opener?.location?.hostname));
-
-    const uniqueSignals = [...new Set(signals.filter(Boolean))];
-    const foreignSignals = uniqueSignals.filter(d => d !== selfHost);
-    const jsEmbeddingDomain = foreignSignals.length > 0 ? foreignSignals[0] : selfHost;
-
-    function waitForUnity(cb) {
-      const t = setInterval(() => {
-        if (window.unityInstance && window.unityInstance.SendMessage) {
-          clearInterval(t);
-          cb();
-        }
-      }, 100);
-    }
-
-    fetch(WHITELIST_URL + '?v=' + Date.now(), { cache: 'no-store' })
-      .then(r => r.json())
-      .then(json => {
-        const flags = json.flags || {};
-        const APPLY_ENFORCEMENT = getFlag(flags, 'redirect_on_reject', false);
-        const CHECK_DOMAIN = getFlag(flags, 'enforce_domain_check', true);
-        const game = (json.whitelisted_games || []).find(g => g.game_enum === GAME_ENUM);
-        const allowedDomains = (json.allowed_domains || []).map(normalize);
-
-        let allowed = true;
-        if (CHECK_DOMAIN) {
-          allowed = !!game && allowedDomains.includes(jsEmbeddingDomain);
-        }
-
-        waitForUnity(() => {
-          if (allowed || !APPLY_ENFORCEMENT) {
-            unityInstance.SendMessage('H5MadKidGames', 'H5_OnDomainApproved');
-          } else {
-            unityInstance.SendMessage('H5MadKidGames', 'H5_OnDomainRejected');
-            setTimeout(() => {
-              try { window.top.location.href = game?.original_game_url || OFFICIAL_SITE; } 
-              catch { location.href = OFFICIAL_SITE; }
-            }, REDIRECT_DELAY);
-          }
-        });
-      })
-      .catch(err => {
-        waitForUnity(() => { unityInstance.SendMessage('H5MadKidGames', 'H5_OnDomainApproved'); });
-      });
-  })();
-  </script>
-
-  <script async data-ad-frequency-hint="30s" data-ad-channel="8806355381"
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2328712687113561"
-    crossorigin="anonymous"></script>
-  <script>
-    window.adsbygoogle = window.adsbygoogle || [];
-    var adBreak = adConfig = function(o) { adsbygoogle.push(o); };
-  </script>
-</head>
-
-<body>
-  <div id="unity-container">
-    <canvas id="unity-canvas" width="960" height="540" tabindex="-1"></canvas>
-
-    <div id="unity-loading-bar" style="display: block;">
-      <div id="unity-logo">
-        <img src="thumb_2.jpg" alt="Game Logo" id="unity-logo-img" />
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Unity WebGL Player | Keep on Mining</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="manifest" href="manifest.webmanifest">
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=960 height=540 tabindex="-1"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
       </div>
-      <div id="unity-game-name">Keep on Mining</div>
-      <div id="unity-company-name">by madkidgames.com</div>
-
-      <div id="unity-progress-bar-empty">
-        <div id="unity-progress-bar-full"></div>
-      </div>
-
-      <div id="custom-loading-spinner" style="display: flex;">
-        <div class="spinner"></div>
-        <div class="spinner-text">Loading...</div>
-      </div>
+      <div id="unity-warning"> </div>
     </div>
-
-    <div id="unity-warning"></div>
-  </div>
-
-  <script>
-    window.addEventListener("load", function () {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("ServiceWorker.js");
-      }
-
-      const canvas = document.querySelector("#unity-canvas");
-      const loadingBar = document.querySelector("#unity-loading-bar");
-      const progressBarFull = document.querySelector("#unity-progress-bar-full");
-      const warningBanner = document.querySelector("#unity-warning");
-      const spinner = document.getElementById("custom-loading-spinner");
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var warningBanner = document.querySelector("#unity-warning");
 
       function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
-        }
-        const div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        
-        if (type == 'error') {
-          div.style = 'background: red; padding: 10px; color: white;';
-          alert("Unity Error: " + msg); 
-        } else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function () {
-            if (div.parentNode) warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
+        if (type == 'error') alert(msg);
       }
 
-      const buildUrl = "Build";
-      const loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
+      
+      // We add a timestamp to the end of URLs to force Vercel to bypass its cache
+      var cb = "?v=" + new Date().getTime();
 
-      // --- CONFIG UPDATED TO WORK WITH GITHUB PAGES ---
-      const config = {
-        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data",
-        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js",
-        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm",
+      var config = {
+        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data" + cb,
+        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js" + cb,
+        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm" + cb,
         streamingAssetsUrl: "StreamingAssets",
         companyName: "madkidgames.com",
         productName: "Keep on Mining",
@@ -182,56 +48,31 @@
       };
 
       if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        const meta = document.createElement('meta');
+        var meta = document.createElement('meta');
         meta.name = 'viewport';
         meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
         document.getElementsByTagName('head')[0].appendChild(meta);
+        container.className = "unity-mobile";
+        canvas.className = "unity-mobile";
+      } else {
+        canvas.style.width = "960px";
+        canvas.style.height = "540px";
       }
 
-      canvas.style.background = "url('" + buildUrl + "/513047b48a3896bb5a1c88974cf436c0.jpg') center / cover";
+      loadingBar.style.display = "block";
 
-      const script = document.createElement("script");
+      var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
-        }).then((instance) => {
-          window.unityInstance = instance;
+        }).then((unityInstance) => {
           loadingBar.style.display = "none";
-          if (spinner) spinner.style.display = "none";
         }).catch((message) => {
-          alert("Unity Initialization Failed: " + message);
+          alert(message);
         });
       };
       document.body.appendChild(script);
-    });
-
-    // Handle Window Resizing
-    (function () {
-      function resizeUnityCanvas() {
-        const canvas = document.getElementById('unity-canvas');
-        if (!canvas) return;
-        const targetAspect = 16 / 9;
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-        let newWidth = windowWidth;
-        let newHeight = windowWidth / targetAspect;
-        if (newHeight > windowHeight) {
-          newHeight = windowHeight;
-          newWidth = newHeight * targetAspect;
-        }
-        canvas.style.width = newWidth + 'px';
-        canvas.style.height = newHeight + 'px';
-      }
-      window.addEventListener('load', resizeUnityCanvas);
-      window.addEventListener('resize', resizeUnityCanvas);
-      window.addEventListener('orientationchange', resizeUnityCanvas);
-    })();
-  </script>
-
-  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" 
-    integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" 
-    data-cf-beacon='{"version":"2024.11.0","token":"0a7c7133c4e648d097398256f74bcfc1","r":1}' 
-    crossorigin="anonymous"></script>
-</body>
+    </script>
+  </body>
 </html>
