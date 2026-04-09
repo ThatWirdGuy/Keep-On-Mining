@@ -154,7 +154,7 @@
         
         if (type == 'error') {
           div.style = 'background: red; padding: 10px; color: white;';
-          alert("Unity Error: " + msg); // Alerts specific errors from the engine
+          alert("Unity Error: " + msg); 
         } else {
           if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
           setTimeout(function () {
@@ -168,10 +168,11 @@
       const buildUrl = "Build";
       const loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
 
+      // --- CONFIG UPDATED TO WORK WITH GITHUB PAGES ---
       const config = {
-        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data.br",
-        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
-        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm.br",
+        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data",
+        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js",
+        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "madkidgames.com",
         productName: "Keep on Mining",
@@ -198,13 +199,13 @@
           loadingBar.style.display = "none";
           if (spinner) spinner.style.display = "none";
         }).catch((message) => {
-          alert("Unity Instance Error: " + message); // Alerts if the loader fails to initialize
+          alert("Unity Initialization Failed: " + message);
         });
       };
       document.body.appendChild(script);
     });
 
-    // Auto-resize Logic
+    // Handle Window Resizing
     (function () {
       function resizeUnityCanvas() {
         const canvas = document.getElementById('unity-canvas');
