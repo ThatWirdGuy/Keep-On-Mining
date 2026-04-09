@@ -226,6 +226,14 @@ var adBreak = adConfig = function(o) { adsbygoogle.push(o); };
       }
     });
 
+    <script>
+  window.addEventListener("load", function () {
+    // Service worker
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("ServiceWorker.js");
+    }
+
+    // DOM refs moved inside load so elements are guaranteed to exist
     const container = document.querySelector("#unity-container");
     const canvas = document.querySelector("#unity-canvas");
     const progressBarFull = document.querySelector("#unity-progress-bar-full");
@@ -246,6 +254,8 @@ var adBreak = adConfig = function(o) { adsbygoogle.push(o); };
           updateBannerVisibility();
         }, 5000);
       }
+      updateBannerVisibility();
+    }
       updateBannerVisibility();
     }
 
