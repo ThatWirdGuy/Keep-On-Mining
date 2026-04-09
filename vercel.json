@@ -1,24 +1,11 @@
 {
+  "cleanUrls": true,
   "headers": [
     {
-      "source": "/Build/(.*)\\.wasm\\.br",
+      "source": "/Build/(.*)",
       "headers": [
-        { "key": "Content-Type", "value": "application/wasm" },
-        { "key": "Content-Encoding", "value": "br" }
-      ]
-    },
-    {
-      "source": "/Build/(.*)\\.js\\.br",
-      "headers": [
-        { "key": "Content-Type", "value": "application/javascript" },
-        { "key": "Content-Encoding", "value": "br" }
-      ]
-    },
-    {
-      "source": "/Build/(.*)\\.data\\.br",
-      "headers": [
-        { "key": "Content-Type", "value": "application/octet-stream" },
-        { "key": "Content-Encoding", "value": "br" }
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "no-cache" }
       ]
     }
   ]
