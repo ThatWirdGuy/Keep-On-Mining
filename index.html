@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>Unity WebGL Player | Keep on Mining</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body style="text-align: center; background-color: #231f20; margin: 0; padding: 0;">
@@ -22,13 +21,15 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
-      // Verify your folder is named "Build" exactly. If it is "build", change this to lowercase.
-      var buildUrl = "Build"; 
+      var buildUrl = "Build";
+      // Loader doesn't have .br, so this stays the same
+      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
 
       var config = {
-        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data",
-        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js",
-        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm",
+        // ADDED .br TO THESE THREE FILENAMES:
+        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data.br",
+        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
+        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm.br",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "madkidgames.com",
         productName: "Keep on Mining",
@@ -36,17 +37,15 @@
       };
 
       var script = document.createElement("script");
-      // This is the file that IS working, so we keep this path
-      script.src = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
-      
+      script.src = loaderUrl;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
-          console.error("Unity Initialization Error:", message);
-          alert(message);
+          console.error(message);
+          alert("Load Failed: " + message);
         });
       };
       document.body.appendChild(script);
