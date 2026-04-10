@@ -9,7 +9,33 @@
         },
         {
           "key": "Content-Type",
+          "value": "application/javascript"
+        }
+      ]
+    },
+    {
+      "source": "/Build/(.*).data.br",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "br"
+        },
+        {
+          "key": "Content-Type",
           "value": "application/octet-stream"
+        }
+      ]
+    },
+    {
+      "source": "/Build/(.*).wasm.br",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "br"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/wasm"
         }
       ]
     }
