@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
-  <body style="text-align: center; background-color: #231f20;">
+  <body style="text-align: center; background-color: #231f20; margin: 0; padding: 0;">
     <div id="unity-container" class="unity-desktop">
       <canvas id="unity-canvas" width=960 height=540 style="background: #231f20"></canvas>
       <div id="unity-loading-bar">
@@ -23,10 +23,11 @@
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
       var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
-
-      // Cache buster to force Vercel to see your new files
+      // Generate the version string once
       var v = "?v=" + Date.now();
+
+      // FIX 1: Apply the cache buster to the loader URL as well
+      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js" + v;
 
       var config = {
         dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data" + v,
@@ -41,11 +42,13 @@
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
+        // FIX 2: Ensure createUnityInstance is called correctly
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
+          console.error(message); // Log to console for easier debugging
           alert("Load Failed: " + message);
         });
       };
