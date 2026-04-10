@@ -31,9 +31,11 @@
     streamingAssetsUrl: "StreamingAssets",
     companyName: "madkidgames.com",
     productName: "Keep on Mining",
-    productVersion: "1.0.1", // Increment this to force-clear old cache
-    cacheControl: function (url) { return "no-cache"; },
-    dataCaching: false, 
+    productVersion: "1.0",
+    // CRITICAL FOR GITHUB PAGES:
+    // This tells Unity to use its own Javascript decompressor 
+    // when the server fails to provide the correct headers.
+    decompressorUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
   };
 
   var script = document.createElement("script");
@@ -44,7 +46,7 @@
     }).then((unityInstance) => {
       loadingBar.style.display = "none";
     }).catch((message) => {
-      console.error("Unity Load Error:", message);
+      alert(message);
     });
   };
   document.body.appendChild(script);
