@@ -9,7 +9,7 @@
   </head>
   <body style="text-align: center; background-color: #231f20; margin: 0; padding: 0;">
     <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=960 height=540 style="background: #231f20"></canvas>
+      <canvas id="unity-canvas" width="960" height="540" style="background: #231f20"></canvas>
       <div id="unity-loading-bar">
         <div id="unity-logo"></div>
         <div id="unity-progress-bar-empty">
@@ -22,17 +22,14 @@
       var loadingBar = document.querySelector("#unity-loading-bar");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
+      // Verify these file names match your 'Build' folder EXACTLY
       var buildUrl = "Build";
-      // Generate the version string once
-      var v = "?v=" + Date.now();
-
-      // FIX 1: Apply the cache buster to the loader URL as well
-      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js" + v;
+      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
 
       var config = {
-        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data" + v,
-        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js" + v,
-        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm" + v,
+        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data",
+        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js",
+        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "madkidgames.com",
         productName: "Keep on Mining",
@@ -42,16 +39,20 @@
       var script = document.createElement("script");
       script.src = loaderUrl;
       script.onload = () => {
-        // FIX 2: Ensure createUnityInstance is called correctly
         createUnityInstance(canvas, config, (progress) => {
           progressBarFull.style.width = 100 * progress + "%";
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
-          console.error(message); // Log to console for easier debugging
+          console.error("Unity Load Error:", message);
           alert("Load Failed: " + message);
         });
       };
+      
+      script.onerror = () => {
+        console.error("The loader script could not be found at: " + loaderUrl);
+      };
+
       document.body.appendChild(script);
     </script>
   </body>
