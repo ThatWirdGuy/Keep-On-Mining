@@ -32,11 +32,8 @@
         companyName: "madkidgames.com",
         productName: "Keep on Mining",
         productVersion: "1.0",
-        // These settings help bypass server header issues
-        cacheControl: function (url) {
-          return "no-cache";
-        },
-        dataCaching: false,
+        // Force Unity to handle decompression if the server fails to send headers
+        decompressorUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
       };
 
       var script = document.createElement("script");
@@ -47,7 +44,7 @@
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
-          console.error("Unity Error:", message);
+          console.error("Unity Error Detail:", message);
         });
       };
       document.body.appendChild(script);
