@@ -16,40 +16,40 @@
         </div>
       </div>
     </div>
-   <script>
-  var canvas = document.querySelector("#unity-canvas");
-  var loadingBar = document.querySelector("#unity-loading-bar");
-  var progressBarFull = document.querySelector("#unity-progress-bar-full");
+    <script>
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
-  var buildUrl = "Build";
-  var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
 
-  var config = {
-    dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data.br",
-    frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
-    codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm.br",
-    streamingAssetsUrl: "StreamingAssets",
-    companyName: "madkidgames.com",
-    productName: "Keep on Mining",
-    productVersion: "1.0",
-    // CRITICAL FOR GITHUB PAGES:
-    // This tells Unity to use its own Javascript decompressor 
-    // when the server fails to provide the correct headers.
-    decompressorUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
-  };
+      var config = {
+        dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data.br",
+        frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
+        codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm.br",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "madkidgames.com",
+        productName: "Keep on Mining",
+        productVersion: "1.0",
+        // This tells Unity to handle decompression if GitHub doesn't send the headers
+        decompressorUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
+      };
 
-  var script = document.createElement("script");
-  script.src = loaderUrl;
-  script.onload = () => {
-    createUnityInstance(canvas, config, (progress) => {
-      progressBarFull.style.width = 100 * progress + "%";
-    }).then((unityInstance) => {
-      loadingBar.style.display = "none";
-    }).catch((message) => {
-      alert(message);
-    });
-  };
-  document.body.appendChild(script);
-</script>
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+          // This will pop up a window with the exact error message
+          alert("Unity Load Error: " + message);
+          console.error(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
   </body>
 </html>
