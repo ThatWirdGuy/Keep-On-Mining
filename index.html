@@ -22,11 +22,9 @@
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
 
       var buildUrl = "Build";
-      // Loader doesn't have .br, so this stays the same
       var loaderUrl = buildUrl + "/7a2dbded24d57e056180125b1583e7c4.loader.js";
 
       var config = {
-        // ADDED .br TO THESE THREE FILENAMES:
         dataUrl: buildUrl + "/e29695efbcf5ebbb46a7758c5afb6fd8.data.br",
         frameworkUrl: buildUrl + "/192dc58933867dc05ab7d6f586760fba.framework.js.br",
         codeUrl: buildUrl + "/0a22e241de4d50d15d1aaedf9730a256.wasm.br",
@@ -44,8 +42,8 @@
         }).then((unityInstance) => {
           loadingBar.style.display = "none";
         }).catch((message) => {
-          console.error(message);
-          alert("Load Failed: " + message);
+          console.error("Unity Init Error:", message);
+          alert(message);
         });
       };
       document.body.appendChild(script);
